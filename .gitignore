@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Build output
+backend/database/*.db
+backend/database/*.sqlite
+backend/database/*.sqlite3
+frontend/dist/
+
+
