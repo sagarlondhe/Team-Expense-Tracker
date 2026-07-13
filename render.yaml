@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: team-expense-backend
+    env: node
+    plan: free
+    region: oregon
+    branch: main
+    rootDirectory: backend
+    buildCommand: cd backend && npm ci
+    startCommand: cd backend && npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "${PORT}"
+
+# Optional managed Postgres (uncomment to create and attach)
+# databases:
+#   - name: team-expense-db
+#     region: oregon
+#     plan: starter
+#     postgresVersion: "14"
+
+# Note:
+# - Render will provide a `DATABASE_URL` env var automatically if you create the Postgres above.
+# - This manifest sets the service root to `backend` and runs the build/start commands there.
