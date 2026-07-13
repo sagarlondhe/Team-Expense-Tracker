@@ -18,14 +18,23 @@ const allowedOrigins = (process.env.FRONTEND_URL || '')
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin) {
+      // Allow non-browser requests (server-to-server, curl, etc.)
       return callback(null, true);
     }
 
-    if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+    // If no allowed origins configured, allow all origins
+    if (allowedOrigins.length === 0) {
       return callback(null, true);
     }
 
-    return callback(new Error('Not allowed by CORS'));
+    // Allow if the origin exactly matches one of the configured origins
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Do not throw an error here; respond without CORS headers instead
+    // so the request will be blocked by the browser without causing a 500.
+    return callback(null, false);
   },
   credentials: true,
 };
