@@ -15,6 +15,18 @@ services:
       - key: PORT
         value: "${PORT}"
 
+  - type: static
+    name: team-expense-frontend
+    plan: free
+    region: oregon
+    branch: main
+    rootDirectory: frontend
+    buildCommand: cd frontend && npm ci && npm run build
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: "https://team-expense-tracker.onrender.com/api"
+
 # Optional managed Postgres (uncomment to create and attach)
 # databases:
 #   - name: team-expense-db
