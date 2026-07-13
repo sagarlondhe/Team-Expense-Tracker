@@ -15,6 +15,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Root route for health checks and browser requests
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Team Expense Tracker API is running.',
+    routes: ['/api/categories', '/api/expenses', '/api/summary']
+  });
+});
+
 // Routes
 app.use('/api/categories', categoryRoutes);
 app.use('/api/expenses', expenseRoutes);
