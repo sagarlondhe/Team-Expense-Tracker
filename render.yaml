@@ -46,7 +46,7 @@ services:
     plan: free
     region: oregon
     branch: main
-    rootDirectory: backend
+    rootDir: backend
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /health
@@ -65,7 +65,7 @@ services:
     plan: free
     region: oregon
     branch: main
-    rootDirectory: frontend
+    rootDir: frontend
     buildCommand: npm install && npm run build
     publishPath: dist
     envVars:
