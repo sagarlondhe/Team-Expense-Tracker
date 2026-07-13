@@ -47,14 +47,18 @@ services:
     region: oregon
     branch: main
     rootDirectory: backend
-    buildCommand: npm ci
+    buildCommand: npm install
     startCommand: npm start
-    healthCheckPath: /
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: "${PORT}"
+        value: "5000"
+      - key: FRONTEND_URL
+        value: "https://team-expense-tracker.onrender.com"
+      - key: DATABASE_URL
+        value: "./database/expenses.db"
 
   - type: static
     name: team-expense-frontend
@@ -62,8 +66,8 @@ services:
     region: oregon
     branch: main
     rootDirectory: frontend
-    buildCommand: npm ci && npm run build
+    buildCommand: npm install && npm run build
     publishPath: dist
     envVars:
-      - key: VITE_API_URL
+      - key: VITE_API_BASE_URL
         value: "https://team-expense-tracker.onrender.com/api"

@@ -46,3 +46,42 @@ A lightweight full-stack app for logging team expenses, managing categories, and
 - Backend repository tests were run.
 - The summary endpoint was checked over HTTP.
 - The frontend production build completed successfully.
+
+## Deployment on Render
+This project is prepared to deploy as exactly two Render services:
+- Backend: Web Service
+- Frontend: Static Site
+
+### Backend deployment
+1. Create a new Render Web Service for the backend.
+2. Point it to the repository and set the root directory to `backend`.
+3. Use these settings:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Health Check Path: `/health`
+4. Add the following environment variables:
+   - `NODE_ENV=production`
+   - `PORT=10000`
+   - `FRONTEND_URL=https://your-frontend.onrender.com`
+   - `DATABASE_URL=./database/expenses.db`
+
+### Frontend deployment
+1. Create a new Render Static Site for the frontend.
+2. Point it to the repository and set the root directory to `frontend`.
+3. Use these settings:
+   - Build Command: `npm install && npm run build`
+   - Publish Directory: `dist`
+4. Add the build environment variable:
+   - `VITE_API_BASE_URL=https://your-backend.onrender.com/api`
+
+### Environment variables
+- Backend example file: `backend/.env.example`
+- Frontend example file: `frontend/.env.example`
+
+### Connecting frontend to backend
+The frontend reads its API base URL from `VITE_API_BASE_URL`, so no hardcoded API URL is needed. After deployment, update the frontend environment variable to the deployed backend URL and the frontend will communicate with it automatically.
+
+### Troubleshooting
+- If the frontend cannot reach the API, confirm that `VITE_API_BASE_URL` points to the backend service URL ending in `/api`.
+- If CORS errors appear, verify that `FRONTEND_URL` in the backend matches the deployed frontend URL exactly.
+- If the backend health check fails, open `https://your-backend.onrender.com/health` to confirm the service is up.

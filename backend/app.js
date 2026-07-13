@@ -10,9 +10,18 @@ const errorHandler = require('./middlewares/errorHandler');
 dotenv.config();
 
 const app = express();
+const allowedOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const corsOptions = {
+  origin: allowedOrigins.length > 0 ? allowedOrigins : true,
+  credentials: true,
+};
 
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Root route for health checks and browser requests
@@ -21,6 +30,13 @@ app.get('/', (req, res) => {
     success: true,
     message: 'Team Expense Tracker API is running.',
     routes: ['/api/categories', '/api/expenses', '/api/summary']
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Server is running'
   });
 });
 

@@ -2,7 +2,16 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 
-const dbPath = path.join(__dirname, '..', 'database', 'expenses.db');
+const defaultDbPath = path.join(__dirname, '..', 'database', 'expenses.db');
+const configuredDbPath = process.env.DATABASE_URL || '';
+const normalizedDbPath = configuredDbPath.startsWith('sqlite://')
+  ? configuredDbPath.replace('sqlite://', '')
+  : configuredDbPath;
+const dbPath = normalizedDbPath
+  ? path.isAbsolute(normalizedDbPath)
+    ? normalizedDbPath
+    : path.join(__dirname, '..', normalizedDbPath)
+  : defaultDbPath;
 
 // Ensure database directory exists
 const dbDir = path.dirname(dbPath);
